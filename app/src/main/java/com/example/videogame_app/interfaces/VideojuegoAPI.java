@@ -1,0 +1,14 @@
+package com.example.videogame_app.interfaces;
+
+import com.example.videogame_app.models.VideogameModel;
+
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
+
+public interface VideojuegoAPI {
+
+    @GET("api/games/{id}?key=")
+    public Call<VideogameModel> find(@Path("id") String id);
+
+}
