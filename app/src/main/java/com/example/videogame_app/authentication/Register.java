@@ -19,7 +19,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class Register extends AppCompatActivity {
     EditText myPersonName, myEmailAddress, myPassword, myPasswordRepeat;
@@ -34,10 +33,10 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         myPersonName = findViewById(R.id.personName);
-        myEmailAddress = findViewById(R.id.emailAddress);
-        myPassword = findViewById(R.id.password);
+        myEmailAddress = findViewById(R.id.emailLogin);
+        myPassword = findViewById(R.id.passwordLogin);
         myRegisterButton = findViewById(R.id.registerButton);
-        myToLogin = findViewById(R.id.toLogin);
+        myToLogin = findViewById(R.id.toRegister);
 
         myProgressBar = findViewById(R.id.progressBar);
         mAuth = FirebaseAuth.getInstance();
@@ -62,7 +61,7 @@ public class Register extends AppCompatActivity {
                     myPassword.setError("Password is required.");
                 }
                 if(pass.length() < 6){
-                    myPasswordRepeat.setError("Password minimun length must be 6 characters.");
+                    myPassword.setError("Password minimun length must be 6 characters.");
                 }
 
                 myProgressBar.setVisibility(View.VISIBLE);
@@ -82,7 +81,12 @@ public class Register extends AppCompatActivity {
             }
         });
 
-        //myToLogin.setOnClickListener();
+        myToLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), Login.class));
+            }
+        });
     }
 
 
