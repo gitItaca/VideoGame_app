@@ -58,9 +58,14 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create()).build();
         VideojuegoAPI videojuegoAPI = retrofit.create(VideojuegoAPI.class);
 
+        ArrayList<Integer> listIds = new ArrayList<Integer>();
         for(int x=3498;x>3496;x--){
-            Integer id = x;
-            Call<VideogameModel> call = videojuegoAPI.find(id.toString());              //Llama a la API por el metodo de la interfaz find()
+            listIds.add(x);
+        }
+
+        for(int x=0;x<listIds.size();x++){
+            //Integer id = x;
+            Call<VideogameModel> call = videojuegoAPI.find(listIds.get(x).toString());              //Llama a la API por el metodo de la interfaz find()
 
             call.enqueue(new Callback<VideogameModel>() {
                 @Override
