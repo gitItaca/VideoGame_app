@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "90993636618",
+    "project_id": "videogame-app-3a099",
+    "storage_bucket": "videogame-app-3a099.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:90993636618:android:17595669378285c133f6f3",
+        "android_client_info": {
+          "package_name": "com.example.videogame_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "90993636618-vbvt8oivdvoa7jd7avb6qs6qb02ika9h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFqMVIXwv_EFG6geW7wpKFxW_IwZKSJfA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "90993636618-vbvt8oivdvoa7jd7avb6qs6qb02ika9h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

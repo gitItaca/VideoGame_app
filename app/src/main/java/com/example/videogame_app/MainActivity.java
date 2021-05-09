@@ -4,12 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.videogame_app.authentication.Login;
 import com.example.videogame_app.interfaces.VideojuegoAPI;
 import com.example.videogame_app.models.VideogameModel;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -23,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     Adapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +43,12 @@ public class MainActivity extends AppCompatActivity {
         GridLayoutManager gridLayoutManager=new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(gridLayoutManager);
 
+    }
+
+    public void logout(View view) {
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(getApplicationContext(), Login.class));
+        finish();
     }
 
     public ArrayList<VideogameModel> dataqueue(){                                                   //Metodo con el que meto la información que necesito de la API en un ArrayList
@@ -77,4 +89,5 @@ public class MainActivity extends AppCompatActivity {
 
         return holderVideogames;
     }
+
 }
