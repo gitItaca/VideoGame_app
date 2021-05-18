@@ -18,13 +18,13 @@
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"
             android:src="@drawable/borrar"
-            android:id="@+id/imgPrueba"/>
+            android:id="@+id/imageViewPortada"/>
 
         <TextView
-            android:id="@+id/textPrueba"
+            android:id="@+id/textViewPortada"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/imgPrueba"
+            android:layout_below="@+id/imageViewPortada"
             android:layout_centerHorizontal="true"
             android:text="Texto de prueba"
             android:textAlignment="center"
