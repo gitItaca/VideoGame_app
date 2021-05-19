@@ -14,8 +14,8 @@
         android:padding="16dp">
 
         <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="200dp"
+            android:layout_height="150dp"
             android:layout_centerHorizontal="true"
             android:src="@drawable/borrar"
             android:id="@+id/imageViewPortada"/>

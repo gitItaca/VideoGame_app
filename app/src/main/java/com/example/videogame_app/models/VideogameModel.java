@@ -2,17 +2,16 @@ package com.example.videogame_app.models;
 
 public class VideogameModel {
 
-    //int id;
+    int id;
     String name;
     String background_image;
 
-//    public int getId() {
-//        return id;
-//    }
-//
-//    public void setId(int id) {
-//        this.id = id;
-//    }
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
