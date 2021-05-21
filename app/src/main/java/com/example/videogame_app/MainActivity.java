@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private Retrofit retrofit;
     private RecyclerView recyclerView;
     private ListaVideojuegosAdapter listaVideojuegosAdapter;
+    private ArrayList<VideogameModel> videjuegoLista;
     private int page=1;
     private boolean isScrolling = true;
 
@@ -41,7 +42,15 @@ public class MainActivity extends AppCompatActivity {
         //setTitle("Gamecheck");
 
         recyclerView=findViewById(R.id.recyclerView);
-        listaVideojuegosAdapter =new ListaVideojuegosAdapter();                                                           //Meto la lista de juegos en el listaVideojuegosAdapter
+
+        //Al adapter le meto el item click y lo que me tiene que salir cada vez que pincho en uno de los videojuegos.
+        listaVideojuegosAdapter =new ListaVideojuegosAdapter(new ListaVideojuegosAdapter.ItemClickListener() {
+            @Override
+            public void onItemClick(VideogameModel videogameModel) {
+
+                Log.d(TAG, videogameModel.getName() + " aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+            }
+        });                                                           //Meto la lista de juegos en el listaVideojuegosAdapter
         recyclerView.setAdapter(listaVideojuegosAdapter);
         recyclerView.setHasFixedSize(true);
         GridLayoutManager layoutManager=new GridLayoutManager(this, 2);
@@ -86,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 isScrolling = true;
                 if(response.isSuccessful()){
                     VideojuegoRespuesta videojuegoRespuesta = response.body();
-                    ArrayList<VideogameModel> videjuegoLista = videojuegoRespuesta.getResults();
+                    videjuegoLista = videojuegoRespuesta.getResults();
 
                     listaVideojuegosAdapter.addListaVideojuegos(videjuegoLista);
                 }else{

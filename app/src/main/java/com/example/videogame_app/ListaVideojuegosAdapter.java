@@ -17,9 +17,12 @@ import java.util.ArrayList;
 public class ListaVideojuegosAdapter extends  RecyclerView.Adapter<ListaVideojuegosAdapter.ViewHolder> {
 
     private ArrayList<VideogameModel> data;
+    private ItemClickListener myItemClickListener;
 
-    public ListaVideojuegosAdapter(){
+    //Añado al constructor el itemClickListener
+    public ListaVideojuegosAdapter(ItemClickListener itemClickListener){
         data = new ArrayList<>();
+        this.myItemClickListener = itemClickListener;
     }
 
     @NonNull
@@ -34,6 +37,11 @@ public class ListaVideojuegosAdapter extends  RecyclerView.Adapter<ListaVideojue
         VideogameModel vm = data.get(position);
         holder.textViewPortada.setText(vm.getName());
         Glide.with(holder.imageViewPortada.getContext()).load(vm.getBackground_image()).into(holder.imageViewPortada);
+
+        //Añado en el holder el ClicListener y cojo la posicion del videojuego al que he hecho click.
+        holder.itemView.setOnClickListener(view -> {
+            myItemClickListener.onItemClick(data.get(position));
+        });
     }
 
     @Override
@@ -45,7 +53,6 @@ public class ListaVideojuegosAdapter extends  RecyclerView.Adapter<ListaVideojue
         data.addAll(videjuegoLista);
         notifyDataSetChanged();
     }
-
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -59,4 +66,10 @@ public class ListaVideojuegosAdapter extends  RecyclerView.Adapter<ListaVideojue
             textViewPortada = itemView.findViewById(R.id.textViewPortada);
         }
     }
+
+    //Añado la interface con el tipo de item que voy a hacer click
+    public interface ItemClickListener{
+        void onItemClick(VideogameModel videogameModel);
+    }
+
 }
