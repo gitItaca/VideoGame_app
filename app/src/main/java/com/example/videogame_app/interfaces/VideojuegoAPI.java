@@ -10,8 +10,8 @@ import retrofit2.http.Query;
 
 public interface VideojuegoAPI {
 
-//    @GET("api/games/{id}?key=0ae4a974e9844e94859f16ff0bd5202b")
-//    public Call<VideogameModel> find(@Path("id") String id);
+    @GET("api/games/{id}?key=0ae4a974e9844e94859f16ff0bd5202b")
+    public Call<VideogameModel> find(@Path("id") String id);
 
     @GET("api/games?key=d5007a1d7594498b9e178bb524a3c666")
     Call<VideojuegoRespuesta> obtenerListaVideojuegos(@Query("page") int page);

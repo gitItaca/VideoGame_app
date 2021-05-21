@@ -5,6 +5,9 @@ public class VideogameModel {
     int id;
     String name;
     String background_image;
+    String description;
+    String website;
+
 
     public int getId() {
         return id;
@@ -28,4 +31,19 @@ public class VideogameModel {
     public void setBackground_image(String background_image) {
         this.background_image = background_image;
     }
+
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
 }

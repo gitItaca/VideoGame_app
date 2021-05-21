@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VideoGame_app"
         android:usesCleartextTraffic="true">
-        <activity android:name=".authentication.Login"></activity>
+        <activity android:name=".VideogameDetailActivity"></activity>
+        <activity android:name=".authentication.Login" />
         <activity android:name=".authentication.Register">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
