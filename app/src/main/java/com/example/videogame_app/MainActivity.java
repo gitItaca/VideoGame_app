@@ -43,14 +43,21 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView=findViewById(R.id.recyclerView);
 
-        //Al adapter le meto el item click y lo que me tiene que salir cada vez que pincho en uno de los videojuegos.
+        //___Creo el intent y le asocio la pagina de detalle
+        Intent intent = new Intent(this, VideogameDetailActivity.class);
+
+        //___Al adapter le meto el item click y le asocio el intent para que muestre la pagina de detalle.
         listaVideojuegosAdapter =new ListaVideojuegosAdapter(new ListaVideojuegosAdapter.ItemClickListener() {
             @Override
             public void onItemClick(VideogameModel videogameModel) {
 
-                Log.d(TAG, videogameModel.getName() + " aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                intent.putExtra("id_videogame_selected", videogameModel.getId());
+                startActivity(intent);
+                //Log.d(TAG, videogameModel.getName() + " aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
             }
-        });                                                           //Meto la lista de juegos en el listaVideojuegosAdapter
+        });
+
+        //__Meto la lista de juegos en el listaVideojuegosAdapter
         recyclerView.setAdapter(listaVideojuegosAdapter);
         recyclerView.setHasFixedSize(true);
         GridLayoutManager layoutManager=new GridLayoutManager(this, 2);
@@ -116,6 +123,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), Login.class));
         finish();
     }
+
+
 
 //    public ArrayList<VideogameModel> dataqueue(){                                                   //Metodo con el que meto la información que necesito de la API en un ArrayList
 //        ArrayList<VideogameModel> holderVideogames=new ArrayList<>();
