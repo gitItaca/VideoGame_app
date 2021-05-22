@@ -15,6 +15,8 @@ import com.example.videogame_app.interfaces.VideojuegoAPI;
 import com.example.videogame_app.models.VideogameModel;
 import com.example.videogame_app.models.VideojuegoRespuesta;
 
+import org.jsoup.Jsoup;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -60,7 +62,8 @@ public class VideogameDetailActivity extends AppCompatActivity {
                     //__Recojo en variables la info del model que he recogido con la API
                     String name = videojuego.getName();
                     String descr = videojuego.getDescription();
-
+                    //__Quito las HTML tags de la descripcion
+                    descr = Jsoup.parse(descr).text();
                     //__Asigno al layout la info
                     title.setText(name);
                     description.setText(descr);
