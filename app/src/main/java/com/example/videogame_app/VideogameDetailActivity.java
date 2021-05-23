@@ -3,7 +3,11 @@ package com.example.videogame_app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,12 +42,16 @@ public class VideogameDetailActivity extends AppCompatActivity {
         ImageView portada = findViewById(R.id.imageVideogameDetail);
         TextView title = findViewById(R.id.nameVideogameDetail);
         TextView description = findViewById(R.id.descriptionVideogameDetail);
+        TextView webText = findViewById(R.id.nameWebsiteVideogameDetail);
 
         //___Recojo el id del MainActivity
         bundle = getIntent().getExtras();
         int id = bundle.getInt("id_videogame_selected");
         String idToAPI = Integer.toString(id);
-        Log.d(TAG, String.valueOf(id));
+        //Log.d(TAG, String.valueOf(id));
+
+        //___Creo el intent y le asocio la pagina de la web
+        Intent intentWeb = new Intent(this, WebsiteVideogameActivity.class);
 
         //__Llamo a la API
         retrofit = new Retrofit.Builder().baseUrl("https://api.rawg.io/")
@@ -60,15 +68,28 @@ public class VideogameDetailActivity extends AppCompatActivity {
                     videojuego = response.body();
 
                     //__Recojo en variables la info del model que he recogido con la API
+                    String imgPortada = videojuego.getBackground_image();
                     String name = videojuego.getName();
                     String descr = videojuego.getDescription();
+                    String web = videojuego.getWebsite();
                     //__Quito las HTML tags de la descripcion
                     descr = Jsoup.parse(descr).text();
                     //__Asigno al layout la info
                     title.setText(name);
                     description.setText(descr);
-                    Glide.with(getApplication()).load(videojuego.getBackground_image()).into(portada);
-                    //Log.d(TAG, String.valueOf(name));
+                    webText.setText(web);
+                    Glide.with(getApplication()).load(imgPortada).into(portada);
+
+                    if(webText!= null) {
+                        //__Hago del texto un boton
+                        webText.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                intentWeb.putExtra("URL", web);
+                                startActivity(intentWeb);
+                            }
+                        });
+                    }
 
                 }else{
                     Log.e(TAG, "onResponse FAIL: " +  String.valueOf(response.errorBody()));
@@ -91,4 +112,6 @@ public class VideogameDetailActivity extends AppCompatActivity {
         });
 
     }
+
+
 }

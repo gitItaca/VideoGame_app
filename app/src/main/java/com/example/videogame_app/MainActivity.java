@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
         listaVideojuegosAdapter =new ListaVideojuegosAdapter(new ListaVideojuegosAdapter.ItemClickListener() {
             @Override
             public void onItemClick(VideogameModel videogameModel) {
-
                 intent.putExtra("id_videogame_selected", videogameModel.getId());
                 startActivity(intent);
                 //Log.d(TAG, videogameModel.getName() + " aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
