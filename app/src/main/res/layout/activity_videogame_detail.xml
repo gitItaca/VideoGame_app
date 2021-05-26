@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -26,11 +27,11 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="627dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <ImageView
@@ -54,13 +55,15 @@
                     android:id="@+id/nameWebsiteVideogameDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="TextView" />
+                    android:padding="5dp"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textStyle="italic" />
 
-<!--                <WebView-->
-<!--                    android:id="@+id/webviewVideogameDetail"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="200dp" />-->
+                <!--                <WebView-->
+                <!--                    android:id="@+id/webviewVideogameDetail"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="200dp" />-->
 
                 <TextView
                     android:id="@+id/descriptionVideogameDetail"
@@ -68,8 +71,24 @@
                     android:layout_height="wrap_content"
                     android:padding="10dp"
                     android:text="TextView" />
+
             </LinearLayout>
         </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layoutDirection="rtl"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/addToLoveListButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                tools:srcCompat="@tools:sample/avatars" />
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

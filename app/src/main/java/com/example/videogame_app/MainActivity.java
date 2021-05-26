@@ -15,6 +15,8 @@ import com.example.videogame_app.interfaces.VideojuegoAPI;
 import com.example.videogame_app.models.VideogameModel;
 import com.example.videogame_app.models.VideojuegoRespuesta;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -38,9 +40,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //setTitle("Gamecheck");
 
         recyclerView=findViewById(R.id.recyclerView);
+
 
         //___Creo el intent y le asocio la pagina de detalle
         Intent intent = new Intent(this, VideogameDetailActivity.class);
