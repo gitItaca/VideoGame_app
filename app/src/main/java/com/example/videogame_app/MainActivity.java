@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.example.videogame_app.authentication.Login;
 import com.example.videogame_app.interfaces.VideojuegoAPI;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ListaVideojuegosAdapter listaVideojuegosAdapter;
     private ArrayList<VideogameModel> videjuegoLista;
+    private Button buttonGoLoveList;
     private int page=1;
     private boolean isScrolling = true;
 
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recyclerView=findViewById(R.id.recyclerView);
-
+        buttonGoLoveList = findViewById(R.id.buttonMainToLoveList);
 
         //___Creo el intent y le asocio la pagina de detalle
         Intent intent = new Intent(this, VideogameDetailActivity.class);
@@ -57,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //__Meto la lista de juegos en el listaVideojuegosAdapter
+        //___Meto la lista de juegos en el listaVideojuegosAdapter
         recyclerView.setAdapter(listaVideojuegosAdapter);
         recyclerView.setHasFixedSize(true);
         GridLayoutManager layoutManager=new GridLayoutManager(this, 2);
@@ -90,6 +92,15 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create()).build();
         isScrolling = true;
         obtenerDatos(page);
+
+        //___Boton para ir a la LoveList.
+        Intent intentLoveList = new Intent(this, LoveListActivity.class);
+        buttonGoLoveList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(intentLoveList);
+            }
+        });
     }
 
     private void obtenerDatos(int page){

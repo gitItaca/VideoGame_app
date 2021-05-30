@@ -74,7 +74,6 @@ public class VideogameDetailActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         String userId = fbAuth.getCurrentUser().getUid();
         DocumentReference docRefListaDeseo = db.document(userId+"/listaDeseo");
-        //inLoveList = false;
 
         //___Leo la lista de mi base de datos y compruebo si el videojuego está.
         docRefListaDeseo.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -174,11 +173,11 @@ public class VideogameDetailActivity extends AppCompatActivity {
         });
 
         //___Boton para volver a la pagina principal.
-        Intent intentVolver = new Intent(this, MainActivity.class);
+        Intent intentHome = new Intent(this, MainActivity.class);
         buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(intentVolver);
+                startActivity(intentHome);
             }
         });
 

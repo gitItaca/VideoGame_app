@@ -17,17 +17,11 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/buttonReturnDetail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="RETURN" />
         </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="627dp">
+            android:layout_height="671dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -80,14 +74,31 @@
             android:layout_height="wrap_content"
             android:layoutDirection="rtl"
             android:orientation="horizontal"
-            android:paddingHorizontal="10dp">
+            android:paddingHorizontal="10dp"
+            android:id="@+id/linearLayout">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/addToLoveListButton"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:src="@drawable/heart"/>
+                android:src="@drawable/heart"
+                tools:layout_conversion_absoluteHeight="56dp"
+                tools:layout_editor_absoluteY="627dp"
+                tools:layout_editor_absoluteX="346dp"
+                tools:layout_conversion_absoluteWidth="56dp" />
+
+            <Button
+                android:id="@+id/buttonReturnDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="250dp"
+                android:text="HOME"
+                tools:layout_conversion_absoluteHeight="48dp"
+                tools:layout_conversion_absoluteWidth="100dp"
+                tools:layout_editor_absoluteX="245dp"
+                tools:layout_editor_absoluteY="627dp" />
         </LinearLayout>
     </LinearLayout>
 

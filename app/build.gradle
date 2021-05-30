@@ -50,6 +50,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:20.0.0'
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-firestore:22.1.2'
+    //Para usar substringBetween
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
