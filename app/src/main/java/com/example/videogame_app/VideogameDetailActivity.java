@@ -43,6 +43,7 @@ public class VideogameDetailActivity extends AppCompatActivity {
    private Bundle bundle;
    private Retrofit retrofit;
    private boolean inLoveList;
+    private boolean inPlayList;
    private static final String TAG = "VideogameDetailActivity";
 
    FirebaseAuth fbAuth;
@@ -57,6 +58,7 @@ public class VideogameDetailActivity extends AppCompatActivity {
         Button buttonReturn = findViewById(R.id.buttonReturnDetail);
         Button butonLoveList = findViewById(R.id.buttonDetailsToLoveList);
         FloatingActionButton buttonSaveLove = findViewById(R.id.addToLoveListButton);
+        FloatingActionButton buttonSavePlay = findViewById(R.id.addToPlayListButton);
         ImageView portada = findViewById(R.id.imageVideogameDetail);
         TextView title = findViewById(R.id.nameVideogameDetail);
         TextView description = findViewById(R.id.descriptionVideogameDetail);
@@ -64,6 +66,8 @@ public class VideogameDetailActivity extends AppCompatActivity {
 
         Drawable cruxImg = ResourcesCompat.getDrawable(getResources(), R.drawable.close, null);
         Drawable heartImg = ResourcesCompat.getDrawable(getResources(), R.drawable.heart, null);
+        Drawable minusImg = ResourcesCompat.getDrawable(getResources(), R.drawable.minus, null);
+        Drawable consoleImg = ResourcesCompat.getDrawable(getResources(), R.drawable.console, null);
 
         //___Recojo el id del MainActivity.
         bundle = getIntent().getExtras();
@@ -75,8 +79,9 @@ public class VideogameDetailActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         String userId = fbAuth.getCurrentUser().getUid();
         DocumentReference docRefListaDeseo = db.document(userId+"/listaDeseo");
+        DocumentReference docRefListaJugados = db.document(userId+"/listaJugados");
 
-        //___Leo la lista de mi base de datos y compruebo si el videojuego está.
+        //___Leo la lista de deseo de mi base de datos y compruebo si el videojuego está.
         docRefListaDeseo.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -88,6 +93,25 @@ public class VideogameDetailActivity extends AppCompatActivity {
                     }else{
                         buttonSaveLove.setImageDrawable(cruxImg);
                         inLoveList = true;
+                    }
+                }else{
+                    Toast.makeText(VideogameDetailActivity.this, "El documento no existe", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        //___Leo la lista de jugados de mi base de datos y compruebo si el videojuego está.
+        docRefListaJugados.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot.exists()){
+                    Object savedPlayListGame = documentSnapshot.get(idVideogameToString);
+                    if(savedPlayListGame == null){
+                        buttonSavePlay.setImageDrawable(consoleImg);
+                        inPlayList = false;
+                    }else{
+                        buttonSavePlay.setImageDrawable(minusImg);
+                        inPlayList = true;
                     }
                 }else{
                     Toast.makeText(VideogameDetailActivity.this, "El documento no existe", Toast.LENGTH_SHORT).show();
@@ -170,6 +194,28 @@ public class VideogameDetailActivity extends AppCompatActivity {
                     buttonSaveLove.setImageDrawable(heartImg);
                 }
                 inLoveList=!inLoveList;
+            }
+        });
+
+        //___Boton para enviar el videojuego a mi lista de jugados y guardarlo o borrarlo.
+        buttonSavePlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(inPlayList==false) {
+                    //___Add a new document with a generated ID
+                    videojuegoMap.put(idVideogameToString, videojuego);
+
+                    docRefListaJugados.set(videojuegoMap, SetOptions.merge());
+
+                    buttonSavePlay.setImageDrawable(minusImg);
+                }else {
+                    //___Delete
+                    docRefListaJugados.update(idVideogameToString, FieldValue.delete());
+
+                    buttonSavePlay.setImageDrawable(consoleImg);
+                }
+                inPlayList=!inPlayList;
             }
         });
 

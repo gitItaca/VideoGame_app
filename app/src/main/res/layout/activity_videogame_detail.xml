@@ -60,11 +60,24 @@
                     android:paddingHorizontal="30dp">
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/addToPlayListButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:src="@drawable/console"
+                        tools:layout_conversion_absoluteHeight="56dp"
+                        tools:layout_conversion_absoluteWidth="56dp"
+                        tools:layout_editor_absoluteX="346dp"
+                        tools:layout_editor_absoluteY="627dp" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/addToLoveListButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:clickable="true"
                         android:src="@drawable/heart"
+                        android:translationX="240dp"
                         tools:layout_conversion_absoluteHeight="56dp"
                         tools:layout_conversion_absoluteWidth="56dp"
                         tools:layout_editor_absoluteX="346dp"

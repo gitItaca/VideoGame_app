@@ -14,9 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VideoGame_app"
         android:usesCleartextTraffic="true">
-        <activity android:name=".LoveListActivity">
-
-        </activity>
+        <activity android:name=".PlayListActivity"></activity>
+        <activity android:name=".LoveListActivity"></activity>
         <activity android:name=".WebsiteVideogameActivity" />
         <activity android:name=".VideogameDetailActivity" />
         <activity android:name=".authentication.Login" />

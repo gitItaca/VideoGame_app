@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private ListaVideojuegosAdapter listaVideojuegosAdapter;
     private ArrayList<VideogameModel> videjuegoLista;
     private Button buttonGoLoveList;
+    private Button  buttonGoPlayList;
     private int page=1;
     private boolean isScrolling = true;
 
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView=findViewById(R.id.recyclerView);
         buttonGoLoveList = findViewById(R.id.buttonMainToLoveList);
+        buttonGoPlayList = findViewById(R.id.buttonMainToPlayedList);
 
         //___Creo el intent y le asocio la pagina de detalle
         Intent intent = new Intent(this, VideogameDetailActivity.class);
@@ -97,6 +99,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(intentLoveList);
+            }
+        });
+
+        //___Boton para ir a la PlayedList.
+        Intent intentPlayList = new Intent(this, PlayListActivity.class);
+        buttonGoPlayList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(intentPlayList);
             }
         });
     }
