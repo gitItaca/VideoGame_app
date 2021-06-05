@@ -12,16 +12,10 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-        </LinearLayout>
-
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="671dp">
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -59,6 +53,24 @@
                 <!--                    android:layout_width="match_parent"-->
                 <!--                    android:layout_height="200dp" />-->
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="30dp">
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/addToLoveListButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:src="@drawable/heart"
+                        tools:layout_conversion_absoluteHeight="56dp"
+                        tools:layout_conversion_absoluteWidth="56dp"
+                        tools:layout_editor_absoluteX="346dp"
+                        tools:layout_editor_absoluteY="627dp" />
+                </LinearLayout>
+
                 <TextView
                     android:id="@+id/descriptionVideogameDetail"
                     android:layout_width="match_parent"
@@ -71,35 +83,45 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layoutDirection="rtl"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+            android:background="#994C00"
             android:orientation="horizontal"
             android:paddingHorizontal="10dp"
-            android:id="@+id/linearLayout">
+            android:paddingVertical="5dp">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/addToLoveListButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:src="@drawable/heart"
-                tools:layout_conversion_absoluteHeight="56dp"
-                tools:layout_editor_absoluteY="627dp"
-                tools:layout_editor_absoluteX="346dp"
-                tools:layout_conversion_absoluteWidth="56dp" />
-
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/buttonReturnDetail"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="250dp"
+                android:layout_height="30dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="#ffffff"
                 android:text="HOME"
-                tools:layout_conversion_absoluteHeight="48dp"
-                tools:layout_conversion_absoluteWidth="100dp"
-                tools:layout_editor_absoluteX="245dp"
-                tools:layout_editor_absoluteY="627dp" />
+                android:textColor="#000000" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonDetailsToPlayedList"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="#ffffff"
+                android:text="PLAYEDLIST"
+                android:textColor="#000000" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonDetailsToLoveList"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="#ffffff"
+                android:text="LoveList"
+                android:textColor="#000000" />
+
         </LinearLayout>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -55,6 +55,7 @@ public class VideogameDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_videogame_detail);
 
         Button buttonReturn = findViewById(R.id.buttonReturnDetail);
+        Button butonLoveList = findViewById(R.id.buttonDetailsToLoveList);
         FloatingActionButton buttonSaveLove = findViewById(R.id.addToLoveListButton);
         ImageView portada = findViewById(R.id.imageVideogameDetail);
         TextView title = findViewById(R.id.nameVideogameDetail);
@@ -178,6 +179,15 @@ public class VideogameDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(intentHome);
+            }
+        });
+
+        //___Boton para ir a la LoveList.
+        Intent intentLoveList = new Intent(this, LoveListActivity.class);
+        butonLoveList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(intentLoveList);
             }
         });
 
