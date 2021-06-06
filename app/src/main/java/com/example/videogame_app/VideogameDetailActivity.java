@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,8 +18,10 @@ import androidx.core.content.res.ResourcesCompat;
 import com.bumptech.glide.Glide;
 import com.example.videogame_app.interfaces.VideojuegoAPI;
 import com.example.videogame_app.models.VideogameModel;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -27,8 +30,11 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,13 +48,16 @@ public class VideogameDetailActivity extends AppCompatActivity {
 
    private Bundle bundle;
    private Retrofit retrofit;
-   private boolean inLoveList;
-    private boolean inPlayList;
+   private boolean inLoveList, inPlayList, voted;
+   private RatingBar ratingBar;
+   private String userId, idVideogameToString;
+   private int idVG;
    private static final String TAG = "VideogameDetailActivity";
 
    FirebaseAuth fbAuth;
    FirebaseFirestore db;
    VideogameModel videojuego;
+   VideogameModel videojuegoRating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +66,14 @@ public class VideogameDetailActivity extends AppCompatActivity {
 
         Button buttonReturn = findViewById(R.id.buttonReturnDetail);
         Button butonLoveList = findViewById(R.id.buttonDetailsToLoveList);
+        Button buttonPlayList = findViewById(R.id.buttonDetailsToPlayedList);
         FloatingActionButton buttonSaveLove = findViewById(R.id.addToLoveListButton);
         FloatingActionButton buttonSavePlay = findViewById(R.id.addToPlayListButton);
         ImageView portada = findViewById(R.id.imageVideogameDetail);
         TextView title = findViewById(R.id.nameVideogameDetail);
         TextView description = findViewById(R.id.descriptionVideogameDetail);
         TextView webText = findViewById(R.id.nameWebsiteVideogameDetail);
+        ratingBar = findViewById(R.id.ratingBar);
 
         Drawable cruxImg = ResourcesCompat.getDrawable(getResources(), R.drawable.close, null);
         Drawable heartImg = ResourcesCompat.getDrawable(getResources(), R.drawable.heart, null);
@@ -71,15 +82,16 @@ public class VideogameDetailActivity extends AppCompatActivity {
 
         //___Recojo el id del MainActivity.
         bundle = getIntent().getExtras();
-        int id = bundle.getInt("id_videogame_selected");
-        String idVideogameToString = Integer.toString(id);
+        idVG = bundle.getInt("id_videogame_selected");
+        idVideogameToString = Integer.toString(idVG);
 
         //___Inicializo la base de datos.
         fbAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        String userId = fbAuth.getCurrentUser().getUid();
+        userId = fbAuth.getCurrentUser().getUid();
         DocumentReference docRefListaDeseo = db.document(userId+"/listaDeseo");
         DocumentReference docRefListaJugados = db.document(userId+"/listaJugados");
+        DocumentReference docRefListaValoraciones = db.document(userId+"/listaValoraciones");
 
         //___Leo la lista de deseo de mi base de datos y compruebo si el videojuego está.
         docRefListaDeseo.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -112,6 +124,24 @@ public class VideogameDetailActivity extends AppCompatActivity {
                     }else{
                         buttonSavePlay.setImageDrawable(minusImg);
                         inPlayList = true;
+                    }
+                }else{
+                    Toast.makeText(VideogameDetailActivity.this, "El documento no existe", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        //___Leo la lista de valoraciones de mi base de datos, compruebo si el videojuego está y muestro la valoración que tengo guardada.
+        docRefListaValoraciones.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot.exists()){
+                    Object valoradoPlayListGame = documentSnapshot.get(idVideogameToString);
+                    if(valoradoPlayListGame != null){
+                        String loadRating = valoradoPlayListGame.toString();
+                       //Log.d("RATINGGGGGGGGGGGGGGGG", loadRating);
+                        loadRating = StringUtils.substringBetween(loadRating, "personalRating=", ",");
+                        ratingBar.setRating(Float.parseFloat(loadRating));
                     }
                 }else{
                     Toast.makeText(VideogameDetailActivity.this, "El documento no existe", Toast.LENGTH_SHORT).show();
@@ -219,6 +249,20 @@ public class VideogameDetailActivity extends AppCompatActivity {
             }
         });
 
+        //Guarda la valoracion del ratingBar.
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                //___Add a new document with a generated ID
+                videojuegoRating = new VideogameModel();
+                videojuegoRating.setId(idVG);
+                videojuegoRating.setPersonalRating(rating);
+                videojuegoMap.put(idVideogameToString, videojuegoRating);
+
+                docRefListaValoraciones.set(videojuegoMap, SetOptions.merge());
+            }
+        });
+//_________________Botones menu_______________________________________________________________
         //___Boton para volver a la pagina principal.
         Intent intentHome = new Intent(this, MainActivity.class);
         buttonReturn.setOnClickListener(new View.OnClickListener() {
@@ -234,6 +278,15 @@ public class VideogameDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(intentLoveList);
+            }
+        });
+
+        //___Boton para ir a la PlayList.
+        Intent intentPlayList = new Intent(this, PlayListActivity.class);
+        buttonPlayList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(intentPlayList);
             }
         });
 

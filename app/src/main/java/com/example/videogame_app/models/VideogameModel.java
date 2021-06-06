@@ -7,6 +7,7 @@ public class VideogameModel {
     String background_image;
     String description;
     String website;
+    float personalRating;
 
 
     public int getId() {
@@ -44,6 +45,13 @@ public class VideogameModel {
     }
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+    public float getPersonalRating() {
+        return personalRating;
+    }
+    public void setPersonalRating(float personalRating) {
+        this.personalRating = personalRating;
     }
 
 }
