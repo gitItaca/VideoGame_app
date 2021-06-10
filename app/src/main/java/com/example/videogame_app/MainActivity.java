@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.videogame_app.authentication.Login;
 import com.example.videogame_app.interfaces.VideojuegoAPI;
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     private Button  buttonGoPlayList;
     private int page=1;
     private boolean isScrolling = true;
+    private TextView viewUsername;
+    FirebaseAuth fbAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,11 @@ public class MainActivity extends AppCompatActivity {
         recyclerView=findViewById(R.id.recyclerView);
         buttonGoLoveList = findViewById(R.id.buttonMainToLoveList);
         buttonGoPlayList = findViewById(R.id.buttonMainToPlayedList);
+        viewUsername = findViewById(R.id.textViewNombreUser);
+
+        fbAuth = FirebaseAuth.getInstance();
+        String emailUser = fbAuth.getCurrentUser().getEmail();
+        viewUsername.setText("Hello " + emailUser+ "!");
 
         //___Creo el intent y le asocio la pagina de detalle
         Intent intent = new Intent(this, VideogameDetailActivity.class);

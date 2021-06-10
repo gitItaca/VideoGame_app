@@ -36,6 +36,7 @@ import org.jsoup.Jsoup;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -49,7 +50,7 @@ public class VideogameDetailActivity extends AppCompatActivity {
    private Bundle bundle;
    private Retrofit retrofit;
    private boolean inLoveList, inPlayList, voted;
-   private RatingBar ratingBar;
+   private RatingBar ratingBar, ratingGeneral;
    private String userId, idVideogameToString;
    private int idVG;
    private static final String TAG = "VideogameDetailActivity";
@@ -74,6 +75,7 @@ public class VideogameDetailActivity extends AppCompatActivity {
         TextView description = findViewById(R.id.descriptionVideogameDetail);
         TextView webText = findViewById(R.id.nameWebsiteVideogameDetail);
         ratingBar = findViewById(R.id.ratingBar);
+        ratingGeneral = findViewById(R.id.ratingBarGeneral);
 
         Drawable cruxImg = ResourcesCompat.getDrawable(getResources(), R.drawable.close, null);
         Drawable heartImg = ResourcesCompat.getDrawable(getResources(), R.drawable.heart, null);
@@ -92,6 +94,7 @@ public class VideogameDetailActivity extends AppCompatActivity {
         DocumentReference docRefListaDeseo = db.document(userId+"/listaDeseo");
         DocumentReference docRefListaJugados = db.document(userId+"/listaJugados");
         DocumentReference docRefListaValoraciones = db.document(userId+"/listaValoraciones");
+        DocumentReference docRefValoracionesGenerales = db.collection("valoraciones").document(idVideogameToString); //userId
 
         //___Leo la lista de deseo de mi base de datos y compruebo si el videojuego está.
         docRefListaDeseo.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -142,6 +145,7 @@ public class VideogameDetailActivity extends AppCompatActivity {
                        //Log.d("RATINGGGGGGGGGGGGGGGG", loadRating);
                         loadRating = StringUtils.substringBetween(loadRating, "personalRating=", ",");
                         ratingBar.setRating(Float.parseFloat(loadRating));
+
                     }
                 }else{
                     Toast.makeText(VideogameDetailActivity.this, "El documento no existe", Toast.LENGTH_SHORT).show();
@@ -149,8 +153,57 @@ public class VideogameDetailActivity extends AppCompatActivity {
             }
         });
 
+        //___Leo la lista de valoracionesGenerales de mi base de datos y hago la media entre los usuarios.
+        docRefValoracionesGenerales.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot doc = task.getResult();
+                    if(doc.exists()){
+                        List<String> listVotos = new ArrayList<>();
+                        Map<String, Object> map = doc.getData();
+                        double total = 0;
+                        if(map != null){
+                            for(Map.Entry<String, Object> entry : map.entrySet()){
+                                listVotos.add(entry.getValue().toString());
+                            }
+                            for(String vote : listVotos){
+                                total += Double.parseDouble(vote);
+                            }
+                            //Log.d("VOTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOS", Double.toString(total));
+                        }
+                        int numVotos = map.size();
+                        double media = total/numVotos;
+                        ratingGeneral.setRating((float)media);
+                        //Log.d("VOTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOS",Double.toString(media));
+                    }
+                }
+            }
+        });
+
+//        docRefValoracionesGenerales.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                if(documentSnapshot.exists()){
+////                    int numCli = documentSnapshot.getDocumentReference().ge
+////
+////                    Object valoradoGeneralListGame = documentSnapshot.get(idVideogameToString);
+////                    if(valoradoGeneralListGame != null){
+////                        String loadRating = valoradoGeneralListGame.toString();
+////                        Log.d("RATINGGGGGGGGGGGGGGGG", loadRating);
+////                        loadRating = StringUtils.substringBetween(loadRating, "personalRating=", ",");
+////                        ratingBar.setRating(Float.parseFloat(loadRating));
+//                    }
+//                }else{
+//                    Toast.makeText(VideogameDetailActivity.this, "El documento no existe", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+
         //___Guardo los videojuegos con firebase.
         Map<String, Object> videojuegoMap = new HashMap<>();
+        Map<String, Object> ratingMap = new HashMap<>();
+
 
         //___Creo el intent y le asocio la pagina de la web.
         Intent intentWeb = new Intent(this, WebsiteVideogameActivity.class);
@@ -192,7 +245,6 @@ public class VideogameDetailActivity extends AppCompatActivity {
                             }
                         });
                     }
-
 
                 }else{
                     Log.e(TAG, "onResponse FAIL: " +  String.valueOf(response.errorBody()));
@@ -253,13 +305,17 @@ public class VideogameDetailActivity extends AppCompatActivity {
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                //___Add a new document with a generated ID
+                //___Add a new personal document with a generated ID
                 videojuegoRating = new VideogameModel();
                 videojuegoRating.setId(idVG);
                 videojuegoRating.setPersonalRating(rating);
                 videojuegoMap.put(idVideogameToString, videojuegoRating);
 
                 docRefListaValoraciones.set(videojuegoMap, SetOptions.merge());
+
+                //___Add to the general page
+                ratingMap.put(userId, videojuegoRating.getPersonalRating());
+                docRefValoracionesGenerales.set(ratingMap, SetOptions.merge());
             }
         });
 //_________________Botones menu_______________________________________________________________

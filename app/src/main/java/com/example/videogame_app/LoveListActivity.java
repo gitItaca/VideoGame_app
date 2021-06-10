@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.videogame_app.interfaces.VideojuegoAPI;
@@ -45,7 +46,8 @@ public class LoveListActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private ListaVideojuegosAdapter listaVideojuegosAdapter;
-    private String id, img, name,allInfo;
+    private String id, img, name, allInfo;
+    private TextView viewUsername;
     FirebaseAuth fbAuth;
     FirebaseFirestore db;
 
@@ -57,6 +59,8 @@ public class LoveListActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerViewLove);
         Button home = findViewById(R.id.buttonLoveListToMain);
         Button playButton = findViewById(R.id.buttonLoveToPlayedList);
+        viewUsername = findViewById(R.id.textViewNombreUserLoveList);
+
         //___Creo el intent y le asocio la pagina de detalle
         Intent intent = new Intent(this, VideogameDetailActivity.class);
 
@@ -78,6 +82,8 @@ public class LoveListActivity extends AppCompatActivity {
 
         //___Inicializo la base de datos.
         fbAuth = FirebaseAuth.getInstance();
+            String emailUser = fbAuth.getCurrentUser().getEmail();
+            viewUsername.setText("Hello " + emailUser+ "!");
         db = FirebaseFirestore.getInstance();
         String userId = fbAuth.getCurrentUser().getUid();
         DocumentReference docRefListaDeseo = db.document(userId+"/listaDeseo");

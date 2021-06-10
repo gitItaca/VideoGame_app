@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.videogame_app.models.VideogameModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,6 +30,7 @@ public class PlayListActivity extends AppCompatActivity {
     private ListaVideojuegosAdapter listaVideojuegosAdapter;
     private String id, img, name,allInfo;
     private Button home, loveButton;
+    private TextView viewUsername;
     FirebaseAuth fbAuth;
     FirebaseFirestore db;
 
@@ -40,6 +42,7 @@ public class PlayListActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerViewPlay);
         home = findViewById(R.id.buttonPlayListToMain);
         loveButton = findViewById(R.id.buttonPlayToLoveList);
+        viewUsername = findViewById(R.id.textViewNombreUserPlayList);
 
         //___Creo el intent y le asocio la pagina de detalle
         Intent intent = new Intent(this, VideogameDetailActivity.class);
@@ -61,6 +64,8 @@ public class PlayListActivity extends AppCompatActivity {
 
         //___Inicializo la base de datos.
         fbAuth = FirebaseAuth.getInstance();
+            String emailUser = fbAuth.getCurrentUser().getEmail();
+            viewUsername.setText("Hello " + emailUser+ "!");
         db = FirebaseFirestore.getInstance();
         String userId = fbAuth.getCurrentUser().getUid();
         DocumentReference docRefListaDeseo = db.document(userId+"/listaJugados");
@@ -71,27 +76,30 @@ public class PlayListActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot document = task.getResult();
 
-                //___Aqui cojo toda la info en un String y la separo para coger lo que me interesa.
-                Collection models = document.getData().values();
-                ArrayList<VideogameModel> videojuegoLista = new ArrayList<VideogameModel>();
-                for(Object item : models){
-                    allInfo= String.valueOf(item);
 
-                    id = StringUtils.substringBetween(allInfo, ", id=","}");
-                    name = StringUtils.substringBetween(allInfo, ", name=",", description=");
-                    img = StringUtils.substringBetween(allInfo, "background_image=",", website=");
+                    //___Aqui cojo toda la info en un String y la separo para coger lo que me interesa.
+                    Collection models = document.getData().values();
+                    ArrayList<VideogameModel> videojuegoLista = new ArrayList<VideogameModel>();
+                    for(Object item : models){
+                        allInfo= String.valueOf(item);
 
-                    VideogameModel vgModel = new VideogameModel();
-                    vgModel.setId(Integer.parseInt(id));
-                    vgModel.setName(name);
-                    vgModel.setBackground_image(img);
-                    videojuegoLista.add(vgModel);
-                }
-                //Meto la lista de ideojuegos en el adapter.
-                listaVideojuegosAdapter.addListaVideojuegos(videojuegoLista);
+                        id = StringUtils.substringBetween(allInfo, ", id=","}");
+                        name = StringUtils.substringBetween(allInfo, ", name=",", description=");
+                        img = StringUtils.substringBetween(allInfo, "background_image=",", website=");
+
+                        VideogameModel vgModel = new VideogameModel();
+                        vgModel.setId(Integer.parseInt(id));
+                        vgModel.setName(name);
+                        vgModel.setBackground_image(img);
+                        videojuegoLista.add(vgModel);
+                    }
+                    //Meto la lista de ideojuegos en el adapter.
+                    listaVideojuegosAdapter.addListaVideojuegos(videojuegoLista);
+
+
             }//FIN onComplete
         });//FIN addOnComplete
-
+        
         //___Boton para volver a la pagina principal.
         Intent intentHome = new Intent(this, MainActivity.class);
         home.setOnClickListener(new View.OnClickListener() {
